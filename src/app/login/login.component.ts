@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-login',
@@ -8,29 +9,26 @@ import {FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent {
 
-  loginForm: FormGroup; 
+  loginForm: FormGroup;
+  
+  constructor(private fb: FormBuilder, private loginService: LoginService) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]]
+    });
+   }
 
-  constructor(private fb: FormBuilder) {
+   onSubmit(){
+    if(this.loginForm.valid){
+ 
+      this.loginService.loginUser(this.loginForm.get('email')?.value, this.loginForm.get('senha')?.value).subscribe(data => {
+        
+        console.log(data); 
+        
+      });
 
-   this.loginForm = this.fb.group({
-     email: ['', Validators.required, Validators.email],
-     senha: ['', Validators.required, Validators.minLength(6)]
-   
-
-   });
-
-
-  } 
-
-
-onSubmit(){
-
-if(this.loginForm.valid){
-  console.log("Formulário validado")
-}else{
-  console.log("Formulário inválido")
-}
-
-}
-
+    }else{
+     console.log("Formulário inválido")
+   }
+  }
 }
