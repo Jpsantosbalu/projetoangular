@@ -19,7 +19,6 @@ export class HeroesComponent implements OnInit {
   }; // objeto hero inicia vazio
 
   newHero: Hero = {
-
     "name": '',
     "power": '',
     "age": 0,
